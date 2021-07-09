@@ -14,7 +14,7 @@ public class SolutionTest {
         int left1 = 13, left2 = 24;
         int right1 = 17, right2 = 27;
 
-        Assert.assertEquals(solution.solution(left1,right1),43);
-        Assert.assertEquals(solution.solution(left2,right2),52);
+        Assert.assertEquals(solution.solution(left1, right1), 43);
+        Assert.assertEquals(solution.solution(left2, right2), 52);
     }
 }
