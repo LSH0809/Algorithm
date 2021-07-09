@@ -7,8 +7,6 @@ public class Solution {
         for (int i = 0; i < n; i++) {
             String s1 = change(arr1[i], n);
             String s2 = change(arr2[i], n);
-            System.out.println("s1 : " + s1);
-            System.out.println("s2 : " + s2);
             String temp_string = "";
 
             for (int j = 0; j < n; j++) {
