@@ -27,7 +27,7 @@ class Main {
         }
     }
 
-    public static int bfs(int n, int k) {
+    public static void bfs(int n, int k) {
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(n);
         visited[n] = 1;
@@ -39,24 +39,23 @@ class Main {
                 int next;
 
                 if (i == 0) {
-                    next = now - 1;
-                } else if (i == 1) {
                     next = now + 1;
+                } else if (i == 1) {
+                    next = now - 1;
                 } else {
                     next = now * 2;
                 }
 
-                if (next == K) {
+                if (next == k) {
                     System.out.println(visited[now]);
-                    return now;
+                    return;
                 }
 
-                if (next >= 0 && next < 100000 && visited[next] == 0) {
+                if (next >= 0 && next < visited.length && visited[next] == 0) {
                     queue.offer(next);
                     visited[next] = visited[now] + 1;
                 }
             }
         }
-        return 0;
     }
 }
