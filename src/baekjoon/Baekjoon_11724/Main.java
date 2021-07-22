@@ -1,4 +1,4 @@
-package baekjoon.연결요소의개수;
+package baekjoon.Baekjoon_11724;
 
 import java.io.BufferedReader;
 import java.io.IOException;

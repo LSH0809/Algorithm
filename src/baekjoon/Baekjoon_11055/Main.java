@@ -1,4 +1,4 @@
-package baekjoon.가장큰증가부분수열;
+package baekjoon.Baekjoon_11055;
 
 import java.io.BufferedReader;
 import java.io.IOException;

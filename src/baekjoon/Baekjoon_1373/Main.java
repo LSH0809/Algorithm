@@ -1,4 +1,4 @@
-package baekjoon.이진수팔진수;
+package baekjoon.Baekjoon_1373;
 
 import java.io.BufferedReader;
 import java.io.IOException;

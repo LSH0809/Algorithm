@@ -1,4 +1,4 @@
-package baekjoon.바이러스;
+package baekjoon.Baekjoon_2606;
 
 import java.io.BufferedReader;
 import java.io.IOException;

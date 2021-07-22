@@ -1,4 +1,4 @@
-package baekjoon.일곱난쟁이;
+package baekjoon.Baekjoon_2309;
 
 import java.io.BufferedReader;
 import java.io.IOException;
