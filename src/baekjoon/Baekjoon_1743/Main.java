@@ -80,5 +80,10 @@ class Main {
         if (max < count) {
             max = count;
         }
+
+        String str = "";
+        for(int i= 0; i< 1000; i++){
+            str += i;
+        }
     }
 }
