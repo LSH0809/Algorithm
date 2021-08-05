@@ -28,7 +28,6 @@ public class Main {
 
             dp[i + 1] = Math.max(dp[i + 1], dp[i]);
         }
-
         System.out.println(dp[N]);
     }
 }
