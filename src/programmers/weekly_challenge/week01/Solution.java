@@ -1,4 +1,4 @@
-package programmers.weekly_challenge;
+package programmers.weekly_challenge.week01;
 
 public class Solution {
     public long solution(int price, int money, int count) {

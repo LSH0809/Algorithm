@@ -2,8 +2,7 @@ package programmers.weekly_challenge;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import programmers.weekly_challenge.week01.Solution;
 
 public class SolutionTest {
     int price = 3;
