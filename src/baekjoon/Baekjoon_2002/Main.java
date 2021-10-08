@@ -7,36 +7,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Main {
-    static Map<Integer, String> arr1 = new HashMap<>();
-    static Map<Integer, String> arr2 = new HashMap<>();
-    static int answer = 0;
-    static boolean[] count;
-
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(bufferedReader.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        Map<String, Integer> map = new HashMap<>();
+        int answer = 0;
 
-        for (int i = 0; i < n; i++) {
-            String value1 = bufferedReader.readLine();
-            arr1.put(i, value1);
+        for (int i = 0; i < N; i++) {
+            map.put(br.readLine(), i);
+        }
+        int[] arr = new int[N];
+
+        for (int i = 0; i < N; i++) {
+            String input = br.readLine();
+            arr[i] = map.get(input);
         }
 
-        for (int j = 0; j < n; j++) {
-            String value2 = bufferedReader.readLine();
-            arr2.put(j, value2);
-        }
-
-        answer = -1;
-        for (Map.Entry<Integer, String> element1 : arr1.entrySet()) {
-            int element1_key = element1.getKey();
-            String element1_value = element1.getValue();
-            for (Map.Entry<Integer, String> element2 : arr2.entrySet()) {
-                if (element1_value.equals(element2.getValue())) {
-                    if (element2.getKey() > element1_key) {
-                        int temp = element2.getKey() - element1_key;
-                        answer = Math.max(answer,temp);
-                        break;
-                    }
+        for(int i = 0; i< N-1; i++){
+            for(int j = i+1; j< N; j++){
+                if(arr[i] > arr[j]){
+                    answer += 1;
+                    break;
                 }
             }
         }
