@@ -17,7 +17,7 @@ public class Main {
 		m = Integer.parseInt(st.nextToken());
 		
 		arr = new int[m];
-		visited = new boolean[m];
+		visited = new boolean[n + 1];
 		
 		solve(0);
 	}
@@ -28,19 +28,14 @@ public class Main {
 				System.out.print(arr[i] + " ");
 			}
 			System.out.println();
+			return;
 		} else {
 			for (int i=1; i<=n; i++) {
 				if (!visited[i]) {
 					if (idx == 0 || arr[idx-1] < i) {
-						//d == 0은 다 출력 (1,2 | 1,3 | 1,4)
-						//이전 arr[]원소가 현재 i보다 작을 때
-						
-						visited[i] = true; //방문 처리
-						arr[idx] = i; //원소 담기
-						
-						solve(idx + 1); //재귀
-						
-						//원상복구
+						visited[i] = true;
+						arr[idx] = i;
+						solve(idx + 1);
 						visited[i] = false;
 					}
 				}
