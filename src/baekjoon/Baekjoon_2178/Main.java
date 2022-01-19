@@ -8,62 +8,61 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Main {
-    static int n, m;
+    static int[][] arr,dp;
     static boolean[][] visited;
-    static int[][] arr;
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, -1, 1};
-
-    static class Node {
-        int x;
-        int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+    static int n,m;
+    static int[] dx = {-1,0,1,0};
+    static int[] dy = {0,-1,0,1};
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String s = bufferedReader.readLine();
-        StringTokenizer st = new StringTokenizer(s, " ");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine()," ");
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-
-        arr = new int[n][m];
-        visited = new boolean[n][m];
-
-        for (int i = 0; i < n; i++) {
-            String line = bufferedReader.readLine();
-            for (int j = 0; j < m; j++) {
-                arr[i][j] = Integer.parseInt(line.substring(j, j + 1));
+        arr = new int[n+1][m+1];
+        dp = new int[n+1][m+1];
+        visited = new boolean[n+1][m+1];
+        
+        for(int i = 1; i < n+1; i++){
+            String input = br.readLine();
+            for(int j = 1; j< m+1; j++){
+                arr[i][j] = input.charAt(j-1) - '0';
             }
         }
-
-        bfs(0, 0);
-        System.out.println(arr[n - 1][m - 1]);
+        solve(1,1);
+    
+        System.out.println(dp[n][m] + 1);
     }
-
-    public static void bfs(int x, int y) {
-        Queue<Node> queue = new LinkedList<>();
+    
+    private static void solve(int x, int y){
+        Queue<Point> queue = new LinkedList<>();
+        queue.offer(new Point(x,y));
         visited[x][y] = true;
-        queue.offer(new Node(x, y));
-
-        while (!queue.isEmpty()) {
-            Node now = queue.poll();
-            for (int i = 0; i < 4; i++) {
-                int now_x = now.x + dx[i];
-                int now_y = now.y + dy[i];
-
-                if (now_x >= 0 && now_x < n && now_y >= 0 && now_y < m) {
-                    if (visited[now_x][now_y] == false && arr[now_x][now_y] == 1) {
-                        queue.offer(new Node(now_x, now_y));
-                        arr[now_x][now_y] = arr[now.x][now.y] + 1;
-                        visited[now_x][now_y] = true;
+        
+        while(!queue.isEmpty()){
+            Point point = queue.poll();
+            
+            for(int i = 0; i< 4; i++){
+                int nextX = point.x + dx[i];
+                int nextY = point.y + dy[i];
+                
+                if(nextX > 0 && nextY > 0 && nextX < n+1 && nextY < m+1){
+                    if(arr[nextX][nextY] == 1 && !visited[nextX][nextY]) {
+                        queue.offer(new Point(nextX,nextY));
+                        visited[nextX][nextY] = true;
+                        dp[nextX][nextY] = dp[point.x][point.y] + 1;
                     }
                 }
             }
+        }
+    }
+    
+    static class Point{
+        int x,y;
+    
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
     }
 }
