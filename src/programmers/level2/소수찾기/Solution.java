@@ -2,41 +2,56 @@ package programmers.level2.소수찾기;
 
 import java.util.ArrayList;
 
-public class Solution {
-    ArrayList<Integer> arrayList = new ArrayList<>();
-
+class Solution {
+    static Set<Integer> set = new HashSet<>();
+    static boolean[] visited;
+    
     public int solution(String numbers) {
-        int answer = 0;
-        String temp = "";
-
+        String str = "";
+        int count = 0;
+        visited = new boolean[10];
         for(int i = 0; i< numbers.length(); i++){
-            get_numbers(numbers,temp,i);
+            createNumber(numbers,str,i+1);
         }
-
-        for(int i = 0; i< arrayList.size(); i++){
-            answer = check(arrayList.get(i));
-        }
-        return answer;
-    }
-
-    public void get_numbers(String numbers,String temp, int len){
-
-    }
-
-    public int check(int number){
-        int answer = 0;
-        boolean flag = true;
-        if(number == 0 || number == 1){
-            flag = false;
-        }
-        for(int i = 2; i <= (int)Math.sqrt(number); i+= i){
-            if(number % i == 0){
-                flag = false;
+        
+        Iterator<Integer> iter = set.iterator();
+        while(iter.hasNext()){
+            int value = iter.next();
+            System.out.println(value);
+            if(isPrime(value)){
+                count += 1;
             }
         }
-        if(flag == true){
-            answer++;
+        return count;
+    }
+    
+    private boolean isPrime(int number){
+        if(number <= 1){
+            return false;
         }
-        return answer;
+        for(int i = 2; i * i < number + 1; i++){
+            if(number % i == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private void createNumber(String numbers, String str, int limit){
+        if(str.length() == limit){
+            Integer number = Integer.parseInt(str);
+            set.add(number);
+            return;
+        }
+        
+        for(int i = 0; i< numbers.length(); i++){
+            if(!visited[i]){
+                visited[i] = true;
+                str += numbers.charAt(i);
+                createNumber(numbers,str,limit);
+                visited[i] = false;
+                str = str.substring(0,str.length()-1);
+            }
+        }
     }
 }
