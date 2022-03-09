@@ -1,86 +1,69 @@
 package baekjoon.Baekjoon_4963;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Stack;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int W, H;
-    static int[][] map;
+    static int w,h,count;
+    static int[][] arr;
     static boolean[][] visited;
-    static int[] dx = {0, 0, -1, -1, -1, 1, 1, 1};
-    static int[] dy = {1, -1, 0, -1, 1, 0, 1, -1};
-    static int count;
-
-    static class Node {
-        int x;
-        int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+    static int[] dx = {-1,0,1,0,-1,-1,1,1};
+    static int[] dy = {0,-1,0,1,1,-1,1,-1};
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuffer sb = new StringBuffer();
 
-        while (true) {
-            String input = bufferedReader.readLine();
-            StringTokenizer str = new StringTokenizer(input, " ");
-            W = Integer.parseInt(str.nextToken());
-            H = Integer.parseInt(str.nextToken());
-
-            if (W == 0 & H == 0) {
-                return;
-            }
-
-            map = new int[H][W];
-            visited = new boolean[H][W];
+        while(true){
+            StringTokenizer st = new StringTokenizer(br.readLine()," ");
+            w = Integer.parseInt(st.nextToken());
+            h = Integer.parseInt(st.nextToken());
             count = 0;
 
-            for (int i = 0; i < H; i++) {
-                String line = bufferedReader.readLine();
-                StringTokenizer st = new StringTokenizer(line, " ");
-                for (int j = 0; j < W; j++) {
-                    map[i][j] = Integer.parseInt(st.nextToken());
+            if(w == 0 && h == 0){
+                break;
+            }
+
+            arr = new int[h][w];
+            visited = new boolean[h][w];
+
+            for(int i = 0; i< h; i++){
+                st = new StringTokenizer(br.readLine()," ");
+                for(int j = 0; j< w; j++){
+                    arr[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
 
-            for (int i = 0; i < H; i++) {
-                for (int j = 0; j < W; j++) {
-                    if (map[i][j] == 1 && visited[i][j] == false) {
-                        dfs(i, j);
-                        count++;
+            for(int i = 0; i< h; i++){
+                for(int j = 0; j< w; j++){
+                    if(arr[i][j] == 1 && !visited[i][j]){
+                        count += 1;
+                        dfs(i,j);
                     }
                 }
             }
-            System.out.println(count);
+
+            sb.append(count).append("\n");
         }
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
-    private static void dfs(int x, int y) {
-        Stack<Node> stack = new Stack<>();
-        stack.push(new Node(x, y));
+    private static void dfs(int x, int y){
         visited[x][y] = true;
 
-        while (!stack.isEmpty()) {
+        for(int i = 0; i< 8; i++){
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
 
-            for (int i = 0; i < 8; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx >= 0 && nx < H && ny >= 0 && ny < W) {
-                    if (map[nx][ny] == 1 && visited[nx][ny] == false) {
-                        stack.push(new Node(nx, ny));
-                        visited[nx][ny] = true;
-                        dfs(nx, ny);
-                    }
+            if(nextX >= 0 && nextY >= 0 && nextX < h && nextY < w){
+                if(!visited[nextX][nextY] && arr[nextX][nextY] == 1){
+                    dfs(nextX,nextY);
                 }
             }
-            stack.pop();
         }
     }
 }
