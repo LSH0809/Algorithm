@@ -1,39 +1,51 @@
 package baekjoon.Baekjoon_11053;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        int[] arr = new int[N];
-        int[] dp = new int[N];
-        int max = 0;
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine()," ");
+        int[] arr = new int[n];
+        int[] memo = new int[n + 1];
 
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-
-        for (int i = 0; i < N; i++) {
+        for(int i = 0; i< n; i++){
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.fill(dp,1);
-        
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < i; j++) {
-                if (arr[j] < arr[i] && dp[i] < dp[j] + 1) {
-                    dp[i] = dp[j] + 1;
-                }
+        int len = 0;
+        int idx = 0;
+
+        for(int i = 0; i< n; i++){
+            if(arr[i] > memo[len]){
+                len += 1;
+                memo[len] = arr[i];
+            }else{
+                idx = binarySearch(memo, 0,len,arr[i]);
+                memo[idx] = arr[i];
             }
         }
+        bw.write(String.valueOf(len));
+        bw.flush();
 
-        for (int i = 0; i < N; i++) {
-            max = Math.max(max, dp[i]);
+        bw.close();
+        br.close();
+    }
+
+    private static int binarySearch(int[] memo, int left, int right, int target){
+        int mid = 0;
+
+        while(left < right){
+            mid = (left + right) / 2;
+            if(memo[mid] < target){
+                left = mid + 1;
+            }else{
+                right = mid;
+            }
         }
-
-        System.out.println(max);
+        return right;
     }
 }
