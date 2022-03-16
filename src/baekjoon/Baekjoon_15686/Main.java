@@ -1,87 +1,87 @@
 package baekjoon.Baekjoon_15686;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.StringTokenizer;
 
+
+
 public class Main {
-    static int N;
-    static int M;
-    static int[][] map;
-    static ArrayList<House> chickens;
-    static ArrayList<House> houses;
-    static Stack<House> selectChicken;
-    static int minDist = Integer.MAX_VALUE;
+    static int[][] arr;
+    static boolean[] visited;
+    static int n, m, answer;
+    static ArrayList<Point> home;
+    static ArrayList<Point> chicken;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        map = new int[N + 1][N + 1];
+        home = new ArrayList<>();
+        chicken = new ArrayList<>();
+        arr = new int[n][n];
 
-        chickens = new ArrayList<>();
-        houses = new ArrayList<>();
-        selectChicken = new Stack<>();
-
-        for (int i = 1; i <= N; i++) {
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 1; j <= N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+            for (int j = 0; j < n; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
 
-                if (map[i][j] == 1) {
-                    houses.add(new House(i, j));
-                } else if (map[i][j] == 2) {
-                    chickens.add(new House(i, j));
+                if (arr[i][j] == 1) {
+                    home.add(new Point(i, j));
+                } else if (arr[i][j] == 2) {
+                    chicken.add(new Point(i, j));
                 }
             }
         }
 
-        select(0, 0);
+        answer = Integer.MAX_VALUE;
+        visited = new boolean[chicken.size()];
 
-        System.out.println(minDist);
+        solve(0, 0);
+        bw.write(answer + "\n");
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
-    static void select(int start, int count) {
-        if (count == M) {
-            calcDist();
+    public static void solve(int start, int depth) {
+        if (depth == m) {
+            int res = 0;
+
+            for (int i = 0; i < home.size(); i++) {
+                int temp = Integer.MAX_VALUE;
+                for (int j = 0; j < chicken.size(); j++) {
+                    if (visited[j]) {
+                        int dist = Math.abs(home.get(i).x - chicken.get(j).x)
+                                + Math.abs(home.get(i).y - chicken.get(j).y);
+
+                        temp = Math.min(temp, dist);
+                    }
+                }
+                res += temp;
+            }
+            answer = Math.min(answer, res);
             return;
         }
 
-        for (int i = start; i < chickens.size(); i++) {
-            selectChicken.push(chickens.get(i));
-            select(i + 1, count + 1);
-            selectChicken.pop();
+        for (int i = start; i < chicken.size(); i++) {
+            visited[i] = true;
+            solve(i + 1, depth + 1);
+            visited[i] = false;
         }
     }
 
-    static void calcDist() {
-        int sum = 0;
-        for (House house : houses) {
-            int min = Integer.MAX_VALUE;
-            for (House chicken : selectChicken) {
-                int dist = Math.abs(house.x - chicken.x) + Math.abs(house.y - chicken.y);
-                min = Math.min(min, dist);
-            }
-            sum += min;
+    static class Point {
+        int x, y;
 
-            if (sum > minDist) {
-                return;
-            }
-        }
-        minDist = Math.min(sum, minDist);
-
-    }
-
-    static class House {
-        int x;
-        int y;
-
-        public House(int x, int y) {
+        public Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
