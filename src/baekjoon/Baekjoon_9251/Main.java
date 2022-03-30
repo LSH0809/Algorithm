@@ -1,8 +1,6 @@
 package baekjoon.Baekjoon_9251;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main {
 	static char[] arr1;
@@ -11,26 +9,26 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
 		arr1 = br.readLine().toCharArray();
 		arr2 = br.readLine().toCharArray();
 		
-		dp = new int[arr1.length][arr2.length];
+		dp = new int[arr1.length + 1][arr2.length + 1];
 		
-		System.out.println(solve(arr1.length - 1 ,arr2.length - 1 ));
-	}
-	
-	private static int solve(int x, int y) {
-		if (x == -1 || y == -1) {
-			return 0;
-		}
-		
-		if(dp[x][y] == 0){
-			if(arr1[x] == arr2[y]){
-				dp[x][y] = solve(x-1,y-1) + 1;
-			}else{
-				dp[x][y] = Math.max(solve(x-1,y),solve(x,y-1));
+		for(int i = 1; i< arr1.length + 1; i++){
+			for(int j = 1; j< arr2.length + 1; j++){
+				if(arr1[i-1] == arr2[j-1]){
+					dp[i][j] = dp[i-1][j-1] + 1;
+				}else{
+					dp[i][j] = Math.max(dp[i - 1][j], dp[i][j-1]);
+				}
 			}
 		}
-		return dp[x][y];
+		bw.write(String.valueOf(dp[arr1.length][arr2.length]));
+		bw.flush();
+
+		bw.close();
+		br.close();
 	}
 }
