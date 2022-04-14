@@ -1,28 +1,25 @@
 package baekjoon.Baekjoon_2606;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Stack;
+import java.io.*;
 import java.util.StringTokenizer;
 
 class Main {
     static int[][] arr;
     static boolean[] visited;
-    static int N, K;
+    static int n, k;
     static int count;
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(bufferedReader.readLine());
-        K = Integer.parseInt(bufferedReader.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        n = Integer.parseInt(br.readLine());
+        k = Integer.parseInt(br.readLine());
 
-        arr = new int[N + 1][N + 1];
-        visited = new boolean[N + 1];
+        arr = new int[n + 1][n + 1];
+        visited = new boolean[n + 1];
 
-        for (int i = 1; i <= K; i++) {
-            String line = bufferedReader.readLine();
-            StringTokenizer st = new StringTokenizer(line, " ");
+        for (int i = 1; i <= k; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
@@ -30,26 +27,25 @@ class Main {
             arr[b][a] = 1;
         }
 
-        dfs(1);
+        int answer = solve(1);
 
-        System.out.println(count);
+        bw.write(String.valueOf(answer));
+        bw.flush();
+
+        bw.close();
+        br.close();
     }
 
-    public static void dfs(int start) {
-        Stack<Integer> stack = new Stack<>();
-        stack.push(start);
-        visited[start] = true;
+    private static int solve(int idx) {
+        visited[idx] = true;
 
-        while (!stack.isEmpty()) {
-            for (int i = 1; i <= N; i++) {
-                if (arr[start][i] == 1 && visited[i] == false) {
-                    stack.push(i);
-                    visited[i] = true;
-                    count++;
-                    dfs(i);
-                }
+        for (int i = 1; i < n + 1; i++) {
+            if (!visited[i] && arr[idx][i] == 1) {
+                count += 1;
+                solve(i);
             }
-            stack.pop();
         }
+
+        return count;
     }
 }
